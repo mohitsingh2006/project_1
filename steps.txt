@@ -1,0 +1,77 @@
+====================================================================
+Dynamic Dependent Dropdown | Laravel 8
+====================================================================
+
+Server Requirement:-
+PHP >= 7.3
+
+1) Install Laravel via composer command
+composer create-project laravel/laravel:^8.0 project1
+
+2) Create & configure database and import "country", "state" and "city" tables.
+   You can download sql file from my github account, link given below. 
+
+   https://bit.ly/3bhRjzi
+
+3) Create Controller "AccountController" and create "index" method which will show create user form. 
+   
+   Create view called "create.blade.php", location given below. Now load view in "index"
+
+   resources\view\users\create.blade.php
+
+   Create a Route which will be linked with "index" method.
+
+   Route::get('/create',[AccountController::class,'index']);
+
+   php artisan make:controller AccountController
+
+
+4) We will use bootstrap 5 for UI, so we have to download bootstrap files and we also need jquery file.
+   You can download asset folder from my github account, link given below.
+   
+   https://bit.ly/3bhRjzi
+
+5) Let's create create user form.
+
+6) Now fetch all countries from database and pass into create view.
+
+7) Now when we will select the country from country dropdown, we will run a ajax and fetch states of a 
+   specific selected country. To fetch state via ajax we will create a method called "fetchStates". This
+   method will return states in json format. Through javascript we will append these states to states dropdown.
+   
+   Route::post('/fetch-states/{id}',[AccountController::class,'fetchStates']);
+
+8) Now when we select state we will fetch cities of a state selected from dropdown using Ajax. To fetch     
+   cities we will create "fetchCities" method in "AccountController". It will return cities in json format, which we will append in cities dropdown via javascript.
+   
+   Route::post('/fetch-cities/{id}',[AccountController::class,'fetchCities']);
+
+9) Now create users table in DB to save a user. We also need a Model called "User" which will insert a record 
+   in DB.
+
+10) Now create a method called "save" which will insert form data in DB. Here we will use Ajax to save  
+    form data.
+
+   Route::post('/save',[AccountController::class,'save']);
+
+11) Now we will create a method called "list" which will list all users and later we can edit these 
+    users. 
+    
+   Route::get('/list',[AccountController::class,'list']);
+
+12) For edit we will create "edit" method which will show a edit form and "update" method will update a user.
+
+   Route::get('/edit/{id}',[AccountController::class,'edit']);
+
+   Route::post('/edit/{id}',[AccountController::class,'update']);
+
+
+   ==============================
+
+   $.ajaxSetup({
+         headers: {
+            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+         }
+   });
+
+   $('#state').find('option:not(:first)').remove();
